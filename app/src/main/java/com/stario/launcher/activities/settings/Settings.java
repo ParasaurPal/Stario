@@ -31,6 +31,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
@@ -49,6 +50,7 @@ import androidx.core.widget.NestedScrollView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.stario.launcher.BuildConfig;
 import com.stario.launcher.R;
 import com.stario.launcher.Stario;
 import com.stario.launcher.activities.pages.PageManager;
@@ -466,7 +468,7 @@ public class Settings extends ThemedActivity {
     private void setupUrlButton(int viewId, String url) {
         findViewById(viewId).setOnClickListener(view -> {
             view.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bounce_small));
-            startActivity(new Intent(Intent.ACTION_DEFAULT, Uri.parse(url)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         });
     }
 
