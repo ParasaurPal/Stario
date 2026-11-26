@@ -30,7 +30,7 @@ public final class NiagaraIconPicker {
     public static final int STYLE_LIGHT_COLOR = 3;
     private static final String PREFS = "niagara_category_icons";
     private static final String[] CATEGORIES = {
-        "Art & Design","Auto & Vehicles","Beauty","Books & Reference","Business","Comics",
+        "Apps & Utilities","Art & Design","Auto & Vehicles","Beauty","Books & Reference","Business","Comics",
         "Communication","Dating","Education","Entertainment","Events","Finance","Food & Drink",
         "Health & Fitness","House & Home","Libraries & Demo","Lifestyle","Maps & Navigation",
         "Medical","Music & Audio","News & Magazines","Parenting","Personalization","Photography",
