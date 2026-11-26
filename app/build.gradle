@@ -17,12 +17,20 @@ android {
         applicationId 'com.stario.launcher'
         minSdkVersion 29
         targetSdkVersion 36
-        versionCode 97
+        versionCode (100000 + (System.getenv('GITHUB_RUN_NUMBER') ?: '0').toInteger())
         versionName '2.16'
     }
 
     signingConfigs {
         release {
+            if (hasSigningConfig) {
+                storeFile file(project.getProperty('keystorePath'))
+                storePassword project.getProperty('keystorePassword')
+                keyAlias project.getProperty('keyAlias')
+                keyPassword project.getProperty('keyPassword')
+            }
+        }
+        stableDebug {
             if (hasSigningConfig) {
                 storeFile file(project.getProperty('keystorePath'))
                 storePassword project.getProperty('keystorePassword')
@@ -45,6 +53,9 @@ android {
         debug {
             debuggable true
             applicationIdSuffix ".debug"
+            if (hasSigningConfig) {
+                signingConfig signingConfigs.stableDebug
+            }
         }
     }
 
