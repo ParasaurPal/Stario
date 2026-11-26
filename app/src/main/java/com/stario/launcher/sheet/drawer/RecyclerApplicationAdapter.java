@@ -113,6 +113,8 @@ public abstract class RecyclerApplicationAdapter
         setHasStableIds(true);
     }
 
+    protected void addCustomPopupItems(PopupMenu menu, LauncherApplication application) { }
+
     public class ApplicationViewHolder extends AsyncViewHolder {
         private AdaptiveIconView icon;
         private PopupWindow dialog;
@@ -211,8 +213,6 @@ public abstract class RecyclerApplicationAdapter
             );
         }
 
-        protected void addCustomPopupItems(PopupMenu menu, LauncherApplication application) { }
-
         private void showPopup(LauncherApplication application) {
             LauncherApps launcherApps =
                     ((LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE));
@@ -251,7 +251,7 @@ public abstract class RecyclerApplicationAdapter
                         ResourcesCompat.getDrawable(resources, R.drawable.ic_edit, activity.getTheme()),
                         view -> new ApplicationCustomizationDialog(activity, application).show()));
 
-                addCustomPopupItems(menu, application);
+                RecyclerApplicationAdapter.this.addCustomPopupItems(menu, application);
 
                 menu.add(new PopupMenu.Item(resources.getString(R.string.hide),
                         ResourcesCompat.getDrawable(resources, R.drawable.ic_hide, activity.getTheme()),
