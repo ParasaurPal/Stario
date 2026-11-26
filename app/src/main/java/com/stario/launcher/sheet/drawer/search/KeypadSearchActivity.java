@@ -142,7 +142,7 @@ public class KeypadSearchActivity extends ThemedActivity {
             List<android.content.pm.ShortcutInfo> list=launcher.getShortcuts(q,android.os.Process.myUserHandle());
             if(list!=null)for(android.content.pm.ShortcutInfo si:list){
                 String label=si.getShortLabel()==null?si.getId():si.getShortLabel().toString();
-                shortcuts.add(new Result(label,"Shortcut · "+si.getPackage(),()->launcher.startShortcut(si.getPackage(),si.getId(),null,null,Process.myUserHandle())));
+                shortcuts.add(new Result(label,"Shortcut · "+si.getPackage(),()->launcher.startShortcut(si.getPackage(),si.getId(),null,null,android.os.Process.myUserHandle())));
             }
             all.addAll(shortcuts);
         }catch(Exception ignored){}
@@ -169,4 +169,6 @@ public class KeypadSearchActivity extends ThemedActivity {
         super.onRequestPermissionsResult(requestCode,permissions,results);
         if(requestCode==CONTACTS_REQUEST&&results.length>0&&results[0]==PackageManager.PERMISSION_GRANTED){loadContacts();filter(query.getText().toString());}
     }
+    @Override protected boolean isOpaque() { return true; }
+    @Override protected boolean isAffectedByBackGesture() { return true; }
 }
