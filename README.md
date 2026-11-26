@@ -60,10 +60,6 @@ Stario Launcher. This version offers significant improvements in both performanc
 - **Page Sorting**  
   Easily reorder your home screen pages to suit your workflow.
 
-## Download
-
-- Get the latest release of Stario from the [GitHub Releases page](https://github.com/albu-razvan/Stario/releases/latest).
-- Find Stario at [IzzyOnDroid](https://apt.izzysoft.de/packages/com.stario.launcher).
 
 ## Compatibility
 
