@@ -32,7 +32,7 @@ public class KeypadSearchActivity extends ThemedActivity {
         String title, subtitle, digits;
         Runnable action;
         Result(String t, String s, Runnable a) {
-            title=t; subtitle=s; action=a; digits=toDigits(t);
+            title=t; subtitle=s; action=a; digits=toDigits(t+" "+s);
         }
     }
     private static String toDigits(String value) {
