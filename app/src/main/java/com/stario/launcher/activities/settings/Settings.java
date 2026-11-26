@@ -443,7 +443,7 @@ public class Settings extends ThemedActivity {
                                 .putBoolean(Vibrations.PREFERENCE_ENTRY, checked)
                                 .apply());
 
-        findViewById(R.id.restart).setOnClickListener(view -> restart());
+        findViewById(R.id.backup_restore).setOnClickListener(view ->\n                startActivity(new Intent(this, BackupRestoreActivity.class)));\n\n        findViewById(R.id.restart).setOnClickListener(view -> restart());
         findViewById(R.id.def_launcher).setOnClickListener(view -> requestDefaultLauncherRole());
     }
 
