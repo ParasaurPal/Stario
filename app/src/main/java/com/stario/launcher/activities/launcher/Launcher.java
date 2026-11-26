@@ -28,7 +28,6 @@ import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -252,8 +251,8 @@ public class Launcher extends ThemedActivity {
 
         ComponentName accessibilityComponent =
                 new ComponentName(this, com.stario.launcher.services.AccessibilityService.class);
-        String enabledServices = Settings.Secure.getString(
-                getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+        String enabledServices = android.provider.Settings.Secure.getString(
+                getContentResolver(), android.provider.Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
         boolean accessibilityEnabled = enabledServices != null
                 && enabledServices.contains(accessibilityComponent.flattenToString());
 
@@ -278,7 +277,7 @@ public class Launcher extends ThemedActivity {
             builder.setPositiveButton("Notification access", (dialog, which) ->
                     openSpecialAccessSettings("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
             builder.setNegativeButton("Accessibility", (dialog, which) ->
-                    openSpecialAccessSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                    openSpecialAccessSettings(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS));
         } else if (!notificationAccess) {
             builder.setPositiveButton("Open notification access", (dialog, which) ->
                     openSpecialAccessSettings("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
