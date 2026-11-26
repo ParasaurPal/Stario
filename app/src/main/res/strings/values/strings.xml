@@ -60,7 +60,7 @@
     <string name="low_spec_description">Enabled by default when battery saver is on.</string>
     <string name="icons">Icons</string>
     <string name="system_launcher">Reassign system launcher</string>
-    <string name="app_info">App info</string>
+    <string name="app_info">App info</string>\n    <string name="backup_restore">Backup &amp; restore</string>
 
     <!-- Home pop-up -->
     <string name="media_player">Media player</string>
