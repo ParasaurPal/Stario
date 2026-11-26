@@ -36,6 +36,7 @@ import com.stario.launcher.apps.ProfileManager;
 import com.stario.launcher.apps.interfaces.LauncherProfileListener;
 import com.stario.launcher.sheet.drawer.category.Categories;
 import com.stario.launcher.sheet.drawer.list.List;
+import com.stario.launcher.sheet.drawer.niagara.NiagaraList;
 
 import java.util.ArrayList;
 
@@ -44,9 +45,10 @@ import java.util.ArrayList;
  */
 public class DrawerAdapter extends FragmentPagerAdapter {
     public static final int CATEGORIES_POSITION = 1;
+    public static final int NIAGARA_POSITION = 2;
 
-    // category page + 2 empty pages for transitioning
-    private static final int PAGES = 3;
+    // category + Niagara pages and 2 empty pages for transitioning
+    private static final int PAGES = 4;
 
     private final FragmentManager fragmentManager;
     private final ArrayList<Fragment> fragments;
@@ -147,9 +149,11 @@ public class DrawerAdapter extends FragmentPagerAdapter {
                 fragments.set(position, new Fragment());
             } else if (position == CATEGORIES_POSITION) {
                 fragments.set(position, new Categories());
+            } else if (position == NIAGARA_POSITION) {
+                fragments.set(position, new NiagaraList());
             } else {
                 ProfileApplicationManager manager =
-                        ProfileManager.getInstance().getProfile(position - 2);
+                        ProfileManager.getInstance().getProfile(position - 3);
 
                 if (manager == null) {
                     fragments.set(position, new Fragment());
