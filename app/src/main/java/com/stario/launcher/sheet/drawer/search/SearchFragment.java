@@ -19,7 +19,8 @@ package com.stario.launcher.sheet.drawer.search;
 
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
-import android.content.Context;\nimport android.content.Intent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
@@ -159,7 +160,9 @@ public class SearchFragment extends Fragment {
         FadingEdgeLayout fader = root.findViewById(R.id.fader);
         searchContainer = root.findViewById(R.id.search_container);
         webContainer = root.findViewById(R.id.web_container);
-        search = root.findViewById(R.id.search);\n        root.findViewById(R.id.keypad_search).setOnClickListener(v ->\n                startActivity(new Intent(activity, KeypadSearchActivity.class)));
+        search = root.findViewById(R.id.search);
+        root.findViewById(R.id.keypad_search).setOnClickListener(v ->
+                startActivity(new Intent(activity, KeypadSearchActivity.class)));
         content = root.findViewById(R.id.content);
         base = root.findViewById(R.id.base);
 
