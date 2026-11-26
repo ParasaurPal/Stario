@@ -266,10 +266,10 @@ public class Launcher extends ThemedActivity {
         StringBuilder message = new StringBuilder(
                 "Some Stario features need access enabled in Android Settings. ");
         if (!notificationAccess) {
-            message.append("\\n\\n• Notification access lets Stario display your notification feed and notification counts.");
+            message.append("\n\n• Notification access lets Stario display your notification feed and notification counts.");
         }
         if (!accessibilityEnabled) {
-            message.append("\\n\\n• Accessibility access enables Stario's screen-lock accessibility action.");
+            message.append("\n\n• Accessibility access enables Stario's screen-lock accessibility action.");
         }
         builder.setMessage(message.toString());
 
@@ -283,7 +283,7 @@ public class Launcher extends ThemedActivity {
                     openSpecialAccessSettings("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
         } else {
             builder.setPositiveButton("Open accessibility", (dialog, which) ->
-                    openSpecialAccessSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                    openSpecialAccessSettings(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS));
         }
 
         builder.setNeutralButton("Later", null);
@@ -294,7 +294,7 @@ public class Launcher extends ThemedActivity {
         try {
             startActivity(new Intent(action));
         } catch (android.content.ActivityNotFoundException exception) {
-            startActivity(new Intent(Settings.ACTION_SETTINGS));
+            startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
         }
     }
 
