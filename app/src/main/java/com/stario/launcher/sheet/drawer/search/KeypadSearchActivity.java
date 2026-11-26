@@ -139,7 +139,7 @@ public class KeypadSearchActivity extends ThemedActivity {
         try{
             LauncherApps launcher=(LauncherApps)getSystemService(LAUNCHER_APPS_SERVICE);
             LauncherApps.ShortcutQuery q=new LauncherApps.ShortcutQuery().setQueryFlags(LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC|LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST|LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED);
-            List<android.content.pm.ShortcutInfo> list=launcher.getShortcuts(q,Process.myUserHandle());
+            List<android.content.pm.ShortcutInfo> list=launcher.getShortcuts(q,android.os.Process.myUserHandle());
             if(list!=null)for(android.content.pm.ShortcutInfo si:list){
                 String label=si.getShortLabel()==null?si.getId():si.getShortLabel().toString();
                 shortcuts.add(new Result(label,"Shortcut · "+si.getPackage(),()->launcher.startShortcut(si.getPackage(),si.getId(),null,null,Process.myUserHandle())));
