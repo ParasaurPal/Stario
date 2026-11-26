@@ -97,7 +97,7 @@ public class BackupRestoreActivity extends ThemedActivity {
         }
     }
 
-    private void addFile(ZipOutputStream zip, File file, String path) throws IOException {
+    private void deleteTree(File file) {\n        if (file.isDirectory()) {\n            File[] children = file.listFiles();\n            if (children != null) for (File child : children) deleteTree(child);\n        }\n        // Android keeps the app native libraries and runtime caches outside the backup.\n        file.delete();\n    }\n\n    private void addFile(ZipOutputStream zip, File file, String path) throws IOException {
         if (file.isDirectory()) {
             File[] children = file.listFiles();
             if (children == null) return;
