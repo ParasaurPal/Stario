@@ -211,6 +211,8 @@ public abstract class RecyclerApplicationAdapter
             );
         }
 
+        protected void addCustomPopupItems(PopupMenu menu, LauncherApplication application) { }
+
         private void showPopup(LauncherApplication application) {
             LauncherApps launcherApps =
                     ((LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE));
@@ -248,6 +250,8 @@ public abstract class RecyclerApplicationAdapter
                 menu.add(new PopupMenu.Item(resources.getString(R.string.customize),
                         ResourcesCompat.getDrawable(resources, R.drawable.ic_edit, activity.getTheme()),
                         view -> new ApplicationCustomizationDialog(activity, application).show()));
+
+                addCustomPopupItems(menu, application);
 
                 menu.add(new PopupMenu.Item(resources.getString(R.string.hide),
                         ResourcesCompat.getDrawable(resources, R.drawable.ic_hide, activity.getTheme()),
