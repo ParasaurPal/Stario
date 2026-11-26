@@ -31,7 +31,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
@@ -50,14 +49,12 @@ import androidx.core.widget.NestedScrollView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.stario.launcher.BuildConfig;
 import com.stario.launcher.R;
 import com.stario.launcher.Stario;
 import com.stario.launcher.activities.pages.PageManager;
 import com.stario.launcher.activities.settings.dialogs.HomeScreenDialog;
 import com.stario.launcher.activities.settings.dialogs.hide.HideApplicationsDialog;
 import com.stario.launcher.activities.settings.dialogs.icons.IconsDialog;
-import com.stario.launcher.activities.settings.dialogs.license.LicensesDialog;
 import com.stario.launcher.activities.settings.dialogs.search.engine.SearchEngineDialog;
 import com.stario.launcher.activities.settings.dialogs.search.results.SearchResultsDialog;
 import com.stario.launcher.activities.settings.dialogs.theme.ThemeDialog;
@@ -127,7 +124,6 @@ public class Settings extends ThemedActivity {
         initDisplaySection();
         initSearchSection();
         initMiscSection();
-        initFooterLinks();
 
         handleOrientation();
         getRoot().post(this::startPostponedEnterTransition);
@@ -447,40 +443,6 @@ public class Settings extends ThemedActivity {
 
         findViewById(R.id.restart).setOnClickListener(view -> restart());
         findViewById(R.id.def_launcher).setOnClickListener(view -> requestDefaultLauncherRole());
-    }
-
-    private void initFooterLinks() {
-        //noinspection SetTextI18n
-        ((TextView) findViewById(R.id.version)).setText(BuildConfig.VERSION_NAME + " • Răzvan Albu");
-
-        findViewById(R.id.about).setOnClickListener(view -> {
-            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.setData(Uri.parse("package:" + getPackageName()));
-            startActivity(intent);
-        });
-
-        findViewById(R.id.licenses).setOnClickListener(new View.OnClickListener() {
-            private LicensesDialog dialog;
-            private boolean showing = false;
-
-            @Override
-            public void onClick(View view) {
-                if (dialog == null) {
-                    dialog = new LicensesDialog(Settings.this);
-
-                    dialog.setOnDismissListener(dialog -> showing = false);
-                }
-
-                if (!showing) {
-                    dialog.show();
-                    showing = true;
-                }
-            }
-        });
-
-        setupUrlButton(R.id.github, "https://github.com/albu-razvan/Stario");
-        setupUrlButton(R.id.website, "https://www.razvanalbu.com");
-        setupUrlButton(R.id.discord, "https://discord.gg/WuVapMt9gY");
     }
 
     // Helpers
