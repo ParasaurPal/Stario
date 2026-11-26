@@ -10,6 +10,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import com.stario.launcher.apps.LauncherApplication;
 import com.stario.launcher.themes.ThemedActivity;
@@ -55,33 +63,66 @@ public final class NiagaraIconPicker {
         String k = key(app);
         SharedPreferences p = prefs(activity);
         int saved = p.getInt(k + "_category", -2);
-        String[] choices = new String[CATEGORIES.length + 1];
-        choices[0] = "Automatic (Android category)";
-        System.arraycopy(CATEGORIES, 0, choices, 1, CATEGORIES.length);
-        int selected = saved == -2 ? 0 : Math.max(1, Math.min(CATEGORIES.length, saved + 1));
-        new AlertDialog.Builder(activity)
-            .setTitle("Choose category icon")
-            .setSingleChoiceItems(choices, selected, (dialog, which) -> {
-                int category = which - 1;
-                new AlertDialog.Builder(activity)
-                    .setTitle("Icon appearance")
-                    .setSingleChoiceItems(new String[]{"Black & white","Inverted black & white",
-                            "Adaptive dark colors","Adaptive light colors"},
-                        p.getInt(k + "_style", STYLE_BLACK_WHITE),
-                        (styleDialog, style) -> {
-                            if (category < 0) p.edit().remove(k + "_category").putInt(k + "_style", style).apply();
-                            else p.edit().putInt(k + "_category", category).putInt(k + "_style", style).apply();
-                            styleDialog.dismiss();
-                            dialog.dismiss();
-                            refresh.run();
-                        }).setNegativeButton("Cancel", null).show();
-            })
-            .setNeutralButton("Reset icon", (d, w) -> {
-                p.edit().remove(k + "_category").remove(k + "_style").apply();
-                refresh.run();
-            })
-            .setNegativeButton("Cancel", null)
-            .show();
+        int currentStyle = p.getInt(k + "_style", STYLE_BLACK_WHITE);
+        GridView grid = new GridView(activity);
+        grid.setNumColumns(3);
+        grid.setVerticalSpacing(dp(activity, 8));
+        grid.setHorizontalSpacing(dp(activity, 6));
+        grid.setPadding(dp(activity, 12), dp(activity, 8), dp(activity, 12), dp(activity, 8));
+        grid.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+        grid.setAdapter(new BaseAdapter() {
+            @Override public int getCount() { return CATEGORIES.length + 1; }
+            @Override public Object getItem(int position) { return position; }
+            @Override public long getItemId(int position) { return position; }
+            @Override public View getView(int position, View recycled, ViewGroup parent) {
+                LinearLayout cell = new LinearLayout(activity);
+                cell.setOrientation(LinearLayout.VERTICAL);
+                cell.setGravity(Gravity.CENTER);
+                cell.setPadding(dp(activity, 3), dp(activity, 5), dp(activity, 3), dp(activity, 5));
+                ImageView image = new ImageView(activity);
+                int category = position == 0 ? automaticCategory : position - 1;
+                String name = position == 0 ? "Automatic" : CATEGORIES[position - 1];
+                image.setImageDrawable(new CategoryDrawable(CATEGORIES[Math.max(0, Math.min(CATEGORIES.length - 1, category))],
+                        Math.max(0, category), currentStyle));
+                LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(dp(activity, 48), dp(activity, 48));
+                cell.addView(image, iconParams);
+                TextView label = new TextView(activity);
+                label.setText(position == 0 ? name : name);
+                label.setTextSize(11);
+                label.setGravity(Gravity.CENTER);
+                label.setMaxLines(2);
+                cell.addView(label, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(activity, 34)));
+                return cell;
+            }
+        });
+        AlertDialog categoryDialog = new AlertDialog.Builder(activity)
+                .setTitle("Choose category icon")
+                .setView(grid)
+                .setNeutralButton("Reset icon", (d, w) -> {
+                    p.edit().remove(k + "_category").remove(k + "_style").apply();
+                    refresh.run();
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        grid.setOnItemClickListener((parent, view, position, id) -> {
+            int category = position - 1;
+            new AlertDialog.Builder(activity)
+                .setTitle("Icon appearance")
+                .setSingleChoiceItems(new String[]{"Black & white","Inverted black & white",
+                        "Adaptive dark colors","Adaptive light colors"}, currentStyle,
+                    (styleDialog, style) -> {
+                        if (category < 0) p.edit().remove(k + "_category").putInt(k + "_style", style).apply();
+                        else p.edit().putInt(k + "_category", category).putInt(k + "_style", style).apply();
+                        styleDialog.dismiss();
+                        categoryDialog.dismiss();
+                        refresh.run();
+                    }).setNegativeButton("Cancel", null).show();
+        });
+        categoryDialog.show();
+    }
+
+    private static int dp(Context context, int value) {
+        return Math.round(value * context.getResources().getDisplayMetrics().density);
     }
 
     public static final class CategoryDrawable extends Drawable {
