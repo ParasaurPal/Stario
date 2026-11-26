@@ -27,6 +27,7 @@ import androidx.core.util.Pair;
 import com.stario.launcher.preferences.Entry;
 import com.stario.launcher.sheet.briefing.dialog.BriefingDialog;
 import com.stario.launcher.sheet.drawer.dialog.ApplicationsDialog;
+import com.stario.launcher.sheet.notifications.NotificationsDialog;
 import com.stario.launcher.sheet.widgets.dialog.WidgetsDialog;
 import com.stario.launcher.themes.ThemedActivity;
 
@@ -158,6 +159,15 @@ public enum SheetType {
             }
 
             type = SheetType.LEFT_SHEET;
+        } else if (clazz == NotificationsDialog.class) {
+            if (writeToPreferences) {
+                preferences.edit()
+                        .putString(NotificationsDialog.class.getName(),
+                                SheetType.TOP_SHEET.toString())
+                        .apply();
+            }
+
+            type = SheetType.TOP_SHEET;
         } else if (clazz == WidgetsDialog.class) {
             if (writeToPreferences) {
                 preferences.edit()
