@@ -16,6 +16,54 @@
   ~ along with this program. If not, see <http://www.gnu.org/licenses/>
   -->
 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:background="@drawable/searchbar_background">
+
+    <com.stario.launcher.sheet.drawer.search.KeyPreImeListeningEditText
+        android:id="@+id/search"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/dm_sans_regular"
+        android:imeOptions="flagNoExtractUi|actionGo"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="15dp"
+        android:singleLine="true"
+        android:textColor="?attr/colorOnPrimaryContainer"
+        android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/keypad_search"
+        android:layout_width="52dp"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Open keypad search"
+        android:padding="14dp"
+        android:src="@drawable/ic_keypad"
+        app:tint="?attr/colorOnPrimaryContainer" />
+</LinearLayout>ăzvan Albu
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program. If not, see <http://www.gnu.org/licenses/>
+  -->
+
 <com.stario.launcher.sheet.drawer.search.KeyPreImeListeningEditText xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search"
