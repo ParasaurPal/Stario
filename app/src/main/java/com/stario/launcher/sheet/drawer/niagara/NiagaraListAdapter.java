@@ -30,15 +30,15 @@ public class NiagaraListAdapter extends ListAdapter {
 
     private int getAutomaticCategory(int category) {
         switch (category) {
-            case ApplicationInfo.CATEGORY_GAME: return 32;
-            case ApplicationInfo.CATEGORY_AUDIO: return 19;
-            case ApplicationInfo.CATEGORY_VIDEO: return 30;
-            case ApplicationInfo.CATEGORY_IMAGE: return 23;
-            case ApplicationInfo.CATEGORY_SOCIAL: return 26;
-            case ApplicationInfo.CATEGORY_NEWS: return 20;
-            case ApplicationInfo.CATEGORY_MAPS: return 17;
-            case ApplicationInfo.CATEGORY_PRODUCTIVITY: return 24;
-            case ApplicationInfo.CATEGORY_ACCESSIBILITY: return 28;
+            case ApplicationInfo.CATEGORY_GAME: return 33;
+            case ApplicationInfo.CATEGORY_AUDIO: return 20;
+            case ApplicationInfo.CATEGORY_VIDEO: return 31;
+            case ApplicationInfo.CATEGORY_IMAGE: return 24;
+            case ApplicationInfo.CATEGORY_SOCIAL: return 27;
+            case ApplicationInfo.CATEGORY_NEWS: return 21;
+            case ApplicationInfo.CATEGORY_MAPS: return 18;
+            case ApplicationInfo.CATEGORY_PRODUCTIVITY: return 25;
+            case ApplicationInfo.CATEGORY_ACCESSIBILITY: return 29;
             default: return 0;
         }
     }
