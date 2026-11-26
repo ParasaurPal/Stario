@@ -31,7 +31,7 @@ public class BackupRestoreActivity extends ThemedActivity {
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(24, 32, 24, 24);
-        root.setBackgroundColor(getColor(com.stario.launcher.R.color.transparent));
+        root.setBackgroundColor(getAttributeData(com.google.android.material.R.attr.colorSurface));
         TextView title = new TextView(this);
         title.setText("Backup & restore");
         title.setTextSize(26);
@@ -159,10 +159,13 @@ public class BackupRestoreActivity extends ThemedActivity {
             if (!valid) throw new IOException("Not a Stario backup file.");
             Toast.makeText(this, "Restore complete. Restarting Stario…", Toast.LENGTH_LONG).show();
             getWindow().getDecorView().postDelayed(() -> {
-                Process.killProcess(Process.myPid());
+                android.os.Process.killProcess(android.os.Process.myPid());
             }, 1200);
         } catch (Exception e) {
             Toast.makeText(this, "Restore failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+    @Override protected boolean isOpaque() { return true; }
+
+    @Override protected boolean isAffectedByBackGesture() { return true; }
 }
