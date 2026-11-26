@@ -29,6 +29,9 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
+      - name: Run Android lint
+        run: ./gradlew lintDebug
+
       - name: Build Android APK
         env:
           STARIO_KEYSTORE_BASE64: ${{ secrets.STARIO_KEYSTORE_BASE64 }}
