@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="horizontal" android:gravity="center_vertical"
+    android:paddingStart="24dp" android:paddingEnd="32dp"
+    android:paddingTop="7dp" android:paddingBottom="7dp"
+    android:clipChildren="false" android:clipToPadding="false">
+    <FrameLayout android:layout_width="48dp" android:layout_height="48dp">
+        <com.stario.launcher.ui.icons.AdaptiveIconView
+            android:id="@+id/icon" android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <View android:id="@+id/notification_dot" android:layout_width="10dp"
+            android:layout_height="10dp" android:layout_gravity="top|end"
+            android:background="?attr/colorAccent" android:visibility="gone" />
+    </FrameLayout>
+    <TextView android:id="@+id/label" android:layout_width="0dp"
+        android:layout_height="wrap_content" android:layout_weight="1"
+        android:layout_marginStart="22dp" android:fontFamily="@font/dm_sans_medium"
+        android:gravity="center_vertical|start" android:ellipsize="end"
+        android:maxLines="1" android:textColor="?attr/colorOnSurface"
+        android:textSize="18sp" />
+</LinearLayout>
