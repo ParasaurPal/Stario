@@ -19,17 +19,22 @@ package com.stario.launcher.activities.launcher;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.core.app.NotificationManagerCompat;
 import android.view.animation.DecelerateInterpolator;
 
 import androidx.activity.OnBackPressedCallback;
@@ -200,6 +205,98 @@ public class Launcher extends ThemedActivity {
         attachGlance(container);
         attachSearch(container);
         attachClock(container);
+
+        if (savedInstanceState == null) {
+            getWindow().getDecorView().post(this::requestStartupPermissions);
+        }
+    }
+
+    private static final int STARTUP_PERMISSION_REQUEST = 7301;
+
+    private void requestStartupPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            java.util.ArrayList<String> missing = new java.util.ArrayList<>();
+
+            if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                missing.add(android.Manifest.permission.READ_CONTACTS);
+            }
+
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                missing.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+            }
+
+            if (!missing.isEmpty()) {
+                requestPermissions(missing.toArray(new String[0]), STARTUP_PERMISSION_REQUEST);
+                return;
+            }
+        }
+
+        showSpecialAccessPrompt();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == STARTUP_PERMISSION_REQUEST) {
+            showSpecialAccessPrompt();
+        }
+    }
+
+    private void showSpecialAccessPrompt() {
+        boolean notificationAccess = NotificationManagerCompat
+                .getEnabledListenerPackages(this).contains(getPackageName());
+
+        ComponentName accessibilityComponent =
+                new ComponentName(this, com.stario.launcher.services.AccessibilityService.class);
+        String enabledServices = Settings.Secure.getString(
+                getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+        boolean accessibilityEnabled = enabledServices != null
+                && enabledServices.contains(accessibilityComponent.flattenToString());
+
+        if (notificationAccess && accessibilityEnabled) {
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("Additional access");
+
+        StringBuilder message = new StringBuilder(
+                "Some Stario features need access enabled in Android Settings. ");
+        if (!notificationAccess) {
+            message.append("\\n\\n• Notification access lets Stario display your notification feed and notification counts.");
+        }
+        if (!accessibilityEnabled) {
+            message.append("\\n\\n• Accessibility access enables Stario's screen-lock accessibility action.");
+        }
+        builder.setMessage(message.toString());
+
+        if (!notificationAccess && !accessibilityEnabled) {
+            builder.setPositiveButton("Notification access", (dialog, which) ->
+                    openSpecialAccessSettings("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+            builder.setNegativeButton("Accessibility", (dialog, which) ->
+                    openSpecialAccessSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+        } else if (!notificationAccess) {
+            builder.setPositiveButton("Open notification access", (dialog, which) ->
+                    openSpecialAccessSettings("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+        } else {
+            builder.setPositiveButton("Open accessibility", (dialog, which) ->
+                    openSpecialAccessSettings(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+        }
+
+        builder.setNeutralButton("Later", null);
+        builder.show();
+    }
+
+    private void openSpecialAccessSettings(String action) {
+        try {
+            startActivity(new Intent(action));
+        } catch (android.content.ActivityNotFoundException exception) {
+            startActivity(new Intent(Settings.ACTION_SETTINGS));
+        }
     }
 
     private void attachPinnedCategory(DynamicGridLayout container) {
