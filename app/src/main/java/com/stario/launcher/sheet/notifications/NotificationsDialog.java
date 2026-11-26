@@ -23,6 +23,8 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Typeface;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
@@ -87,7 +89,8 @@ public class NotificationsDialog extends SheetDialogFragment {
         LinearLayout root = new LinearLayout(activity);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(dp(22), dp(20), dp(22), dp(20));
-        root.setBackgroundColor(surface);
+        // Preserve the translucent launcher sheet behind this content.
+        root.setBackgroundColor(Color.TRANSPARENT);
 
         TextView title = new TextView(activity);
         title.setText("Notifications");
@@ -105,12 +108,12 @@ public class NotificationsDialog extends SheetDialogFragment {
 
         LinearLayout actions = new LinearLayout(activity);
         actions.setOrientation(LinearLayout.HORIZONTAL);
-        Button refresh = new Button(activity);
-        refresh.setText("Refresh");
+        TextView refresh = makeAction("Refresh");
         refresh.setOnClickListener(v -> refreshNotifications());
-        actions.addView(refresh, new LinearLayout.LayoutParams(0, dp(48), 1));
-        Button clear = new Button(activity);
-        clear.setText("Clear all");
+        LinearLayout.LayoutParams refreshParams = new LinearLayout.LayoutParams(0, dp(44), 1);
+        refreshParams.rightMargin = dp(8);
+        actions.addView(refresh, refreshParams);
+        TextView clear = makeAction("Clear all");
         clear.setOnClickListener(v -> {
             NotificationService service = NotificationService.getInstance();
             if (service != null) {
@@ -118,7 +121,7 @@ public class NotificationsDialog extends SheetDialogFragment {
                 refreshNotifications();
             }
         });
-        actions.addView(clear, new LinearLayout.LayoutParams(0, dp(48), 1));
+        actions.addView(clear, new LinearLayout.LayoutParams(0, dp(44), 1));
         root.addView(actions);
 
         ScrollView scroll = new ScrollView(activity);
@@ -154,6 +157,7 @@ public class NotificationsDialog extends SheetDialogFragment {
             TextView enable = makeText("Grant notification access", 16, true);
             enable.setGravity(Gravity.CENTER);
             enable.setPadding(dp(16), dp(18), dp(16), dp(18));
+            enable.setBackground(glassBackground());
             enable.setOnClickListener(v -> activity.startActivity(
                     new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)));
             list.addView(enable);
@@ -192,6 +196,7 @@ public class NotificationsDialog extends SheetDialogFragment {
             TextView empty = makeText("You're all caught up.", 16, false);
             empty.setGravity(Gravity.CENTER);
             empty.setPadding(dp(12), dp(36), dp(12), dp(36));
+            empty.setBackground(glassBackground());
             list.addView(empty);
             return;
         }
@@ -221,7 +226,7 @@ public class NotificationsDialog extends SheetDialogFragment {
         card.setOrientation(LinearLayout.HORIZONTAL);
         card.setGravity(Gravity.CENTER_VERTICAL);
         card.setPadding(dp(12), dp(12), dp(12), dp(12));
-        card.setBackgroundResource(android.R.drawable.dialog_holo_light_frame);
+        card.setBackground(glassBackground());
 
         ImageView icon = new ImageView(activity);
         try {
@@ -278,6 +283,30 @@ public class NotificationsDialog extends SheetDialogFragment {
                 "enabled_notification_listeners");
         ComponentName component = new ComponentName(activity, NotificationService.class);
         return enabled != null && enabled.contains(component.flattenToString());
+    }
+
+    private TextView makeAction(String value) {
+        TextView action = makeText(value, 14, true);
+        action.setGravity(Gravity.CENTER);
+        action.setBackground(glassBackground());
+        action.setClickable(true);
+        action.setFocusable(true);
+        return action;
+    }
+
+    private GradientDrawable glassBackground() {
+        int surface = activity.getAttributeData(
+                com.google.android.material.R.attr.colorSurface);
+        int accent = activity.getAttributeData(
+                com.google.android.material.R.attr.colorSecondary);
+        GradientDrawable background = new GradientDrawable();
+        background.setShape(GradientDrawable.RECTANGLE);
+        background.setCornerRadius(dp(18));
+        background.setColor(Color.argb(150, Color.red(surface),
+                Color.green(surface), Color.blue(surface)));
+        background.setStroke(dp(1), Color.argb(95, Color.red(accent),
+                Color.green(accent), Color.blue(accent)));
+        return background;
     }
 
     private TextView makeText(String value, int size, boolean bold) {
