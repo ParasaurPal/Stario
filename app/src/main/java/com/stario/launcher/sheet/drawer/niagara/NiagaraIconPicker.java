@@ -65,6 +65,7 @@ public final class NiagaraIconPicker {
         int saved = p.getInt(k + "_category", -2);
         int currentStyle = p.getInt(k + "_style", STYLE_BLACK_WHITE);
         GridView grid = new GridView(activity);
+        grid.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(activity, 440)));
         grid.setNumColumns(3);
         grid.setVerticalSpacing(dp(activity, 8));
         grid.setHorizontalSpacing(dp(activity, 6));
