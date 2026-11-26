@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp" android:height="48dp"
+    android:viewportWidth="48" android:viewportHeight="48">
+    <group>
+        <path android:fillColor="@android:color/transparent"
+            android:strokeColor="?attr/colorOnSurface" android:strokeWidth="3.2"
+            android:strokeLineCap="round" android:strokeLineJoin="round"
+            android:pathData="<path d=&quot;m7 13 11-5 12 5 11-5v27l-11 5-12-5-11 5zM18 8v27M30 13v27&quot;/><path d=&quot;M24 15c-4 0-7 3-7 7 0 5 7 12 7 12s7-7 7-12c0-4-3-7-7-7z&quot;/><circle cx=&quot;24&quot; cy=&quot;22&quot; r=&quot;2&quot;/>"/>
+    </group>
+</vector>
