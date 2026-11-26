@@ -30,13 +30,29 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Android APK
-        run: ./gradlew assembleDebug
+        env:
+          STARIO_KEYSTORE_BASE64: ${{ secrets.STARIO_KEYSTORE_BASE64 }}
+          STARIO_KEYSTORE_PASSWORD: ${{ secrets.STARIO_KEYSTORE_PASSWORD }}
+          STARIO_KEY_ALIAS: ${{ secrets.STARIO_KEY_ALIAS }}
+          STARIO_KEY_PASSWORD: ${{ secrets.STARIO_KEY_PASSWORD }}
+        run: |
+          if [ -n "$STARIO_KEYSTORE_BASE64" ]; then
+            echo "$STARIO_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/stario-signing.jks"
+            ./gradlew assembleDebug \
+              -PkeystorePath="$RUNNER_TEMP/stario-signing.jks" \
+              -PkeystorePassword="$STARIO_KEYSTORE_PASSWORD" \
+              -PkeyAlias="$STARIO_KEY_ALIAS" \
+              -PkeyPassword="$STARIO_KEY_PASSWORD"
+          else
+            ./gradlew assembleDebug
+          fi
+          cp app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Stario.apk
 
-      - name: Upload debug APK artifact
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: stario-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          name: stario-apk
+          path: app/build/outputs/apk/debug/Stario.apk
           if-no-files-found: error
 
       - name: Publish APK to GitHub Releases
@@ -46,7 +62,7 @@ jobs:
           tag_name: build-${{ github.run_number }}
           name: Stario build ${{ github.run_number }}
           target_commitish: ${{ github.sha }}
-          files: app/build/outputs/apk/debug/*.apk
+          files: app/build/outputs/apk/debug/Stario.apk
           fail_on_unmatched_files: true
           make_latest: true
           generate_release_notes: true
